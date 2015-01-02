@@ -1,0 +1,13 @@
+#!/bin/sh
+
+xbacklight -set 20%
+sudo xset -dpms s off
+
+#autocutsel -selection PRIMARY &
+#parcellite -n -d
+parcellite -n 2>/dev/null &
+
+setxkbmap -option ctrl:nocaps
+setxkbmap -model evdev -layout us,ru -variant , -option -option grp:caps_toggle
+xinput set-prop "ETPS/2 Elantech Touchpad" "Synaptics Tap Action" 8, 9, 0, 0, 1, 2, 3
+ssh-add
