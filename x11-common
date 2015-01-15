@@ -1,0 +1,44 @@
+! $Id$
+
+! load color-specific resources for clients that have them
+#ifdef COLOR
+*customization: -color
+#endif
+
+! make Xaw (Athena widget set) clients understand the delete key
+! this causes problems with some non-Xaw apps, use with care
+! *Text.translations: #override ~Shift ~Meta <Key>Delete: delete-next-character()
+urxvt*foreground:            green
+urxvt*background:            #000000
+urxvt*cursorColor:		green
+urxvt*color0:		#151515
+urxvt*color8:		#505450
+urxvt*color1:		#bf7979
+urxvt*color9:		#f4a45f
+urxvt*color2:		#97b26b
+urxvt*color10:		#c5f779
+urxvt*color3:		#cdcda1
+urxvt*color11:		#ffffaf
+urxvt*color4:		#4a5463
+urxvt*color12:		#7d8794
+urxvt*color5:		#9c3885
+urxvt*color13:		#e628ba
+urxvt*color6:		#88aadd
+urxvt*color14:		#99ccff
+urxvt*color7:		#ffffff
+urxvt*color15:		#dedede
+
+urxvt.perl-ext-common: default,matcher,tabbed,vtwheel
+urxvt*geometry:         173x20
+urxvt*saveLines:        32767
+urxvt*scrollTtyKeypress:true
+urxvt*scrollTtyOutput:  false
+urxvt*scrollBar:        false
+urxvt*secondaryscroll:  true
+urxvt*loginShell:       true
+urxvt*internalBorder:   0
+urxvt*termName:         rxvt-unicode
+urxvt*inheritPixmap:    true
+urxvt*shading:          75
+urxvt*tintColor:        #252525
+urxvt*font:             xft:Terminus:pixelsize=14
