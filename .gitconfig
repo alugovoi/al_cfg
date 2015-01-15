@@ -1,0 +1,22 @@
+[push]
+	default = simple
+
+[credential]
+        helper = cache
+[user]
+  name = Alexei Lugovoi
+  email = alugovoi@mirantis.com
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+[alias]
+  a = add
+  s = status
+  #Branching
+  b = branch
+  ba = branch -a -v -v
+  co = checkout
+  lg = log --graph --decorate=full
+[credential]
+
