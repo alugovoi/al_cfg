@@ -1,0 +1,47 @@
++++ l3_agent.py 2015-04-29 16:53:50.952000221 +0000
+@@ -13,6 +13,7 @@
+ #    under the License.
+ #
+
++import os
+ import eventlet
+ import netaddr
+ from oslo.config import cfg
+@@ -346,6 +347,10 @@
+             ri.iptables_manager.ipv4['filter'].add_rule(c, r)
+         for c, r in self.metadata_nat_rules():
+             ri.iptables_manager.ipv4['nat'].add_rule(c, r)
++       ri.iptables_manager.ipv4['filter'].add_chain('sec-filter', False)
++       ri.iptables_manager.ipv4['filter'].add_rule('FORWARD', '-j sec-filter', False)
++        for c, r in self.firewall_custom_rules():
++            ri.iptables_manager.ipv4['filter'].add_rule(c, r, False)
+         ri.iptables_manager.apply()
+         super(L3NATAgent, self).process_router_add(ri)
+         if self.conf.enable_metadata_proxy:
+@@ -365,6 +370,10 @@
+             ri.iptables_manager.ipv4['filter'].remove_rule(c, r)
+         for c, r in self.metadata_nat_rules():
+             ri.iptables_manager.ipv4['nat'].remove_rule(c, r)
++        ri.iptables_manager.ipv4['filter'].remove_chain('sec-filter', False)
++        ri.iptables_manager.ipv4['filter'].remove_rule('FORWARD', '-j sec-filter', False)
++        for c, r in self.firewall_custom_rules():                                                                                                                                                                              
++            ri.iptables_manager.ipv4['filter'].remove_rule(c, r, False)
+         ri.iptables_manager.apply()
+         if self.conf.enable_metadata_proxy:
+             self._destroy_metadata_proxy(ri.router_id, ri.ns_name)
+@@ -681,6 +690,14 @@      
+                           '-j ACCEPT' % self.conf.metadata_port))
+         return rules
+
++    def firewall_custom_rules(self):
++       env_ips=os.environ["OCF_RESKEY_qr_namespace_allowed_networks"]
++       rules = []
++       for ip in env_ips.split():
++         rules.append(('sec-filter', '-s %s -j RETURN' % ip))
++       rules.append(('sec-filter', '-j DROP'))
++       return rules
++
+     def metadata_nat_rules(self):
+         rules = []
+         if self.conf.enable_metadata_proxy:
+
