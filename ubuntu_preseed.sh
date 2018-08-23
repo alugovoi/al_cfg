@@ -2,8 +2,7 @@
 export LC_ALL=C
 vm_name=$1
 pool_size=10
-# trusty-updates|trusty-updates
-ubuntu_release=trusty-updates
+ubuntu_release=xenial-updates
 current_dir=$(pwd)
 echo "Default storage pool is $pool_name, pool-size is $pool_size"
 echo "Preseed config $current_dir/preseed.cfg"
@@ -17,11 +16,11 @@ virt-install \
 --vcpus 2 \
 --disk /home/alugovoi/vms/${vm_name}.qcow2,size=$pool_size,bus=virtio,sparse=false,format=qcow2 \
 --network network=default,model=virtio \
---location http://ua.archive.ubuntu.com/dists/trusty-updates/main/installer-amd64/ \
+--location http://us.archive.ubuntu.com/dists/xenial-updates/main/installer-amd64/ \
 --initrd-inject=$current_dir/preseed.cfg \
 --extra-args="file=file:/preseed.cfg vga=788 quiet console=tty0 utf8 console=ttyS0,115200" \
 --os-type=linux \
---os-variant=ubuntutrusty \
+--os-variant=ubuntuxenial \
 --virt-type kvm \
 --video=vga \
 --noreboot \

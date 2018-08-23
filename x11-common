@@ -28,7 +28,7 @@ urxvt*color14:		#99ccff
 urxvt*color7:		#ffffff
 urxvt*color15:		#dedede
 
-urxvt.perl-ext-common: default,matcher,tabbed,vtwheel
+urxvt.perl-ext-common: default,matcher,vtwheel
 urxvt*geometry:         173x20
 urxvt*saveLines:        32767
 urxvt*scrollTtyKeypress:true
