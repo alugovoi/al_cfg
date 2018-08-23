@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+
+
+import time 
+import argparse
+import pulsectl
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--inc")
+parser.add_argument("--dec")
+parser.add_argument("--dock",action="store_true")
+parser.add_argument("--undock",action="store_true")
+args = parser.parse_args()
+
+
+def manage_volume(vlm_dff):
+  pulse = pulsectl.Pulse()
+  sinks = pulse.sink_list()
+  for sink in sinks:
+    pulse.volume_change_all_chans(sink,vlm_dff)
+    
+def manage_docking(dock_mode):
+  DOCK_HEADPHONE_DESC="Headset H390 Analog Stereo"
+  DEFAULT_HEADPHONE_DESC="Built-in Audio Analog Stereo"
+
+  time.sleep(5)
+  pulse = pulsectl.Pulse()
+  sinks = pulse.sink_list()
+  inputs = pulse.sink_input_list()
+
+  if dock_mode=='dock':
+    dock_sink=[sink for sink in sinks if DOCK_HEADPHONE_DESC in sink.description][0]
+    default_sink=[sink for sink in sinks if DEFAULT_HEADPHONE_DESC in sink.description][0]
+    pulse.sink_mute(default_sink.index)
+    pulse.sink_default_set(dock_sink)
+    for input in inputs:
+      pulse.sink_input_move(input.index,dock_sink.index)
+  if dock_mode=='undock':
+    default_sink=[sink for sink in sinks if DEFAULT_HEADPHONE_DESC in sink.description][0]
+    pulse.sink_mute(default_sink.index,mute=False)
+    pulse.sink_default_set(default_sink)
+    for input in inputs:
+      pulse.sink_input_move(input.index,default_sink.index)
+
+  
+
+if args.inc:
+  vlm_dff = float(args.inc)
+  manage_volume(vlm_dff)
+if args.dec:
+  vlm_dff = -float(args.dec)
+  manage_volume(vlm_dff)
+if args.dock:
+  manage_docking("dock")
+if args.undock:
+  manage_docking("undock")
